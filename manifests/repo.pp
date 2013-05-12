@@ -69,6 +69,7 @@ define git::repo(
         user    => $owner,
         creates => $creates,
         timeout => 600,
+        require => File[$path],
     }
 
     # I think tagging works, but it's possible setting a tag and a branch will just fight.
@@ -80,7 +81,6 @@ define git::repo(
             command => "/usr/bin/git checkout ${git_tag}",
             unless  => "/usr/bin/git describe --tag|/bin/grep -P '${git_tag}'",
             require => Exec["git_repo_${name}"],
-            before  => File[$path],
         }
     } else {
         exec { "git_${name}_co_branch":
@@ -89,7 +89,6 @@ define git::repo(
             command => "/usr/bin/git checkout ${branch}",
             unless  => "/usr/bin/git branch|/bin/grep -P '\\* ${branch}'",
             require => Exec["git_repo_${name}"],
-            before  => File[$path],
         }
         if $update {
             exec { "git_${name}_pull":
@@ -98,7 +97,6 @@ define git::repo(
                 command => "/usr/bin/git reset --hard HEAD && /usr/bin/git pull origin ${branch}",
                 unless  => "/usr/bin/git diff origin --no-color --exit-code",
                 require => Exec["git_repo_${name}"],
-                before  => File[$path],
             }
         }
     }
