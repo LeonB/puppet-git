@@ -17,7 +17,7 @@ class git::params {
 	### Application related parameters
 
 	$package_name = $::operatingsystem ? {
-		default => 'git'
+		default => ['git', 'git-extras']
 	}
 
 	$enabled = true
