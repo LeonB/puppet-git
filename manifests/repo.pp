@@ -42,9 +42,9 @@ define git::repo(
         $init_cmd = "/usr/bin/git clone -b ${real_branch} ${source} ${path} --recursive"
     } else {
         if $bare {
-            $init_cmd = "/usr/bin/git init --bare ${target}"
+            $init_cmd = "/usr/bin/git init --bare ${path}"
         } else {
-            $init_cmd = "/usr/bin/git init ${target}"
+            $init_cmd = "/usr/bin/git init ${path}"
         }
     }
 
@@ -95,7 +95,7 @@ define git::repo(
                 user    => $owner,
                 cwd     => $path,
                 command => "/usr/bin/git reset --hard HEAD && /usr/bin/git pull origin ${branch}",
-                unless  => "/usr/bin/git diff origin --no-color --exit-code",
+                unless  => '/usr/bin/git diff origin --no-color --exit-code',
                 require => Exec["git_repo_${name}"],
             }
         }

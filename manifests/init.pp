@@ -1,12 +1,12 @@
 class git(
-	$package_name  = params_lookup( 'package_name' ),
-	$enabled       = params_lookup( 'enabled' )
+  $package_name  = params_lookup( 'package_name' ),
+  $enabled       = params_lookup( 'enabled' )
   ) inherits git::params {
 
-  	$ensure = $enabled ? {
-  		true => present,
-  		false => absent
-  	}
+    $ensure = $enabled ? {
+      true => present,
+      false => absent
+    }
 
-	include git::package, git::config
+  include git::package, git::config
 }
